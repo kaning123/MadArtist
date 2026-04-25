@@ -1,0 +1,97 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128.000000" height="128.000000" fill="none">
+	<defs>
+		<clipPath id="clipPath_27">
+			<rect width="32.000000" height="32.000000" x="0.000000" y="96.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_28">
+			<rect width="32.000000" height="32.000000" x="32.000000" y="96.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_29">
+			<rect width="32.000000" height="32.000000" x="0.000000" y="65.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_30">
+			<rect width="32.000000" height="32.000000" x="0.000000" y="34.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_31">
+			<rect width="32.000000" height="32.000000" x="32.000000" y="34.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_32">
+			<rect width="32.000000" height="32.000000" x="64.000000" y="34.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_33">
+			<rect width="32.000000" height="32.000000" x="96.000000" y="34.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_34">
+			<rect width="32.000000" height="32.000000" x="32.000000" y="65.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_35">
+			<rect width="32.000000" height="32.000000" x="32.000000" y="65.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_36">
+			<rect width="32.000000" height="32.000000" x="64.000000" y="96.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_37">
+			<rect width="32.000000" height="32.000000" x="96.000000" y="96.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_38">
+			<rect width="32.000000" height="32.000000" x="96.000000" y="65.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+		<clipPath id="clipPath_39">
+			<rect width="32.000000" height="32.000000" x="64.000000" y="65.000000" fill="rgb(255,255,255)" />
+		</clipPath>
+	</defs>
+	<rect id="尺寸3" width="128.000000" height="128.000000" x="0.000000" y="0.000000" fill="rgb(54,61,74)" />
+	<path d="M0 0L128 0L128 128L0 128L0 0ZM2 1L127 1L127 126L2 126L2 1ZM0 0Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	<g id="容器 1" clip-path="url(#clipPath_27)" customFrame="url(#clipPath_27)">
+		<rect id="容器 1" width="32.000000" height="32.000000" x="0.000000" y="96.000000" />
+		<path d="M0 96L32 96L32 128L0 128L0 96ZM0 97L32 97L32 128L0 128L0 97ZM0 96Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 2" clip-path="url(#clipPath_28)" customFrame="url(#clipPath_28)">
+		<rect id="容器 2" width="32.000000" height="32.000000" x="32.000000" y="96.000000" fill="rgb(91,102,122)" />
+		<path d="M32 96L64 96L64 128L32 128L32 96ZM32 97L64 97L64 126L32 126L32 97ZM32 96Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 3" clip-path="url(#clipPath_29)" customFrame="url(#clipPath_29)">
+		<rect id="容器 3" width="32.000000" height="32.000000" x="0.000000" y="65.000000" fill="rgb(91,102,122)" />
+		<path d="M0 65L32 65L32 97L0 97L0 65ZM0 66L32 66L32 96L0 96L0 66ZM0 65Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 6" clip-path="url(#clipPath_30)" customFrame="url(#clipPath_30)">
+		<rect id="容器 6" width="32.000000" height="32.000000" x="0.000000" y="34.000000" />
+		<path d="M0 34L32 34L32 66L0 66L0 34ZM0 36L32 36L32 66L0 66L0 36ZM0 34Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 7" clip-path="url(#clipPath_31)" customFrame="url(#clipPath_31)">
+		<rect id="容器 7" width="32.000000" height="32.000000" x="32.000000" y="34.000000" />
+		<path d="M32 34L64 34L64 66L32 66L32 34ZM32 36L64 36L64 66L32 66L32 36ZM32 34Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 6" clip-path="url(#clipPath_32)" customFrame="url(#clipPath_32)">
+		<rect id="容器 6" width="32.000000" height="32.000000" x="64.000000" y="34.000000" />
+		<path d="M64 34L96 34L96 66L64 66L64 34ZM64 36L94 36L94 66L64 66L64 36ZM64 34Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 6" clip-path="url(#clipPath_33)" customFrame="url(#clipPath_33)">
+		<rect id="容器 6" width="32.000000" height="32.000000" x="96.000000" y="34.000000" />
+		<path d="M96 34L128 34L128 66L96 66L96 34ZM96 36L128 36L128 66L96 66L96 36ZM96 34Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 2" clip-path="url(#clipPath_34)" customFrame="url(#clipPath_34)">
+		<rect id="容器 2" width="32.000000" height="32.000000" x="32.000000" y="65.000000" />
+		<path d="M32 65L64 65L64 97L32 97L32 65ZM32 66L64 66L64 97L32 97L32 66ZM32 65Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+		<g id="容器 2" clip-path="url(#clipPath_35)" customFrame="url(#clipPath_35)">
+			<rect id="容器 2" width="32.000000" height="32.000000" x="32.000000" y="65.000000" />
+			<path d="M32 65L64 65L64 97L32 97L32 65ZM32 66L64 66L64 97L32 97L32 66ZM32 65Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+		</g>
+	</g>
+	<g id="容器 1" clip-path="url(#clipPath_36)" customFrame="url(#clipPath_36)">
+		<rect id="容器 1" width="32.000000" height="32.000000" x="64.000000" y="96.000000" />
+		<path d="M64 96L96 96L96 128L64 128L64 96ZM64 97L96 97L96 128L64 128L64 97ZM64 96Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 5" clip-path="url(#clipPath_37)" customFrame="url(#clipPath_37)">
+		<rect id="容器 5" width="32.000000" height="32.000000" x="96.000000" y="96.000000" />
+		<path d="M96 96L128 96L128 128L96 128L96 96ZM96 97L128 97L128 128L96 128L96 97ZM96 96Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 2" clip-path="url(#clipPath_38)" customFrame="url(#clipPath_38)">
+		<rect id="容器 2" width="32.000000" height="32.000000" x="96.000000" y="65.000000" />
+		<path d="M96 65L128 65L128 97L96 97L96 65ZM96 66L128 66L128 97L96 97L96 66ZM96 65Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+	<g id="容器 4" clip-path="url(#clipPath_39)" customFrame="url(#clipPath_39)">
+		<rect id="容器 4" width="32.000000" height="32.000000" x="64.000000" y="65.000000" fill="rgb(91,102,122)" />
+		<path d="M64 65L96 65L96 97L64 97L64 65ZM64 66L95 66L95 96L64 96L64 66ZM64 65Z" fill="rgb(192,192,192)" fill-rule="evenodd" />
+	</g>
+</svg>
