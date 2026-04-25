@@ -5,6 +5,8 @@ ROOT_DIR = fl.get_parent_dir(fl.get_my_dir())
 UI_DIR = os.path.join(ROOT_DIR, 'qt_ui')
 PY_DIR = os.path.join(ROOT_DIR, 'py_ui')
 
+if not os.path.exists(PY_DIR):
+    os.makedirs(PY_DIR,exist_ok=True)
 def list_ui_files(ui_dir = UI_DIR):
     return [f for f in os.listdir(ui_dir) if f.endswith('.ui')]
 
