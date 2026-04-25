@@ -25,17 +25,27 @@ EXAMPLE_DICT = {
 class BasicQuickWizard(QtWidgets.QWizard):
     def __init__(self, title, pages, parent=None):
         super().__init__(parent)
+        self.OutputDict = {}
+        self.Exited = False
         self.setWindowTitle(title)
+        self.finished.connect(self.ExitWizard)
         for page in pages:
             if isinstance(page, QtWidgets.QWizardPage):
                 self.addPage(page)
             else:
                 self.page_ = QtWidgets.QWizardPage()
                 self.layout_ = QtWidgets.QVBoxLayout()
+                page.GetOutput.connect(self.EditOutputDict)
                 self.layout_.addWidget(page)
                 self.page_.setLayout(self.layout_)
                 self.addPage(self.page_)
-
+    def EditOutputDict(self, DictInput):
+        for key, value in DictInput.items():
+            self.OutputDict[key] = value
+    def ExitWizard(self):
+        self.Exited = True
+        print(self.OutputDict)
+        self.close()
 class DictQuickWizard(BasicQuickWizard):
     def __init__(self, page_dict: dict, parent=None,
                  DeactiveOption: bool = False, UnuseOptions: list = []):
@@ -89,8 +99,22 @@ class JSONFileQuickWizard(JSONQuickWizard):
             json_str = f.read()
         super().__init__(json_str, parent, DeactiveOption, UnuseOptions)
 
+class BasicQuickWizardWithDefaultWelcomePage(BasicQuickWizard):
+    def __init__(self, title, pages,hint=None, parent=None):
+        welcome_page = QtWidgets.QWizardPage()
+        welcome_layout = QtWidgets.QVBoxLayout()
+        welcome_label = QtWidgets.QLabel(f"欢迎使用快速向导！\n\n{hint}\n\n请点击下一步继续。\n\n\n\n\n\n")
+        Version = QtWidgets.QLabel(f"当前版本: {__INNER_VERSION__}")
+        welcome_layout.addWidget(welcome_label)
+        welcome_layout.addWidget(Version)
+        welcome_page.setLayout(welcome_layout)
+        super().__init__(title, [welcome_page] + pages, parent)
+        self.setPixmap(QtWidgets.QWizard.WizardPixmap.WatermarkPixmap, QtGui.QPixmap(":/icon/icon.png"))
+
 if __name__ == "__main__":
-    app = QtWidgets.QApplication([])
-    label = QtWidgets.QLabel("This is a quick wizard page.")
-    wizard = DictQuickWizard(EXAMPLE_DICT, DeactiveOption=True)
+    import sys
+    import QuickQobjForQuickWizard 
+    app = QtWidgets.QApplication(sys.argv)
+    label = QuickQobjForQuickWizard.QuickQLineEdit("This is a quick wizard page.", "ExampleInput")
+    wizard = BasicQuickWizardWithDefaultWelcomePage("Example Wizard", [label], hint="这是一个示例向导。")
     wizard.exec()
