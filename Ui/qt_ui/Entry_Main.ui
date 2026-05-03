@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="2" column="1">
+     <layout class="QVBoxLayout" name="OperationGroup">
+      <item>
+       <widget class="QPushButton" name="Open_Proj_Btn">
+        <property name="text">
+         <string>打开</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Rename_Proj_Btn">
+        <property name="text">
+         <string>重命名</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Remove_Proj_Btn">
+        <property name="text">
+         <string>移除</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="New_Proj_Btn">
+        <property name="text">
+         <string>New Project</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="Open_Project_Btn">
+        <property name="text">
+         <string>Open project</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="DisplayLabel">
+      <property name="text">
+       <string>Version : Alpha_0.0.1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QListWidget" name="ListDisplayList"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>Rename_Proj_Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>RenameProj()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>252</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>487</x>
+     <y>273</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Open_Proj_Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>OpenProj()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>465</x>
+     <y>142</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>481</x>
+     <y>172</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Remove_Proj_Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>RemoveProj()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>446</x>
+     <y>368</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>483</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>New_Proj_Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>CreateProj()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>439</x>
+     <y>5</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Open_Project_Btn</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>OpenProjectWithPathDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>468</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>RenameProj()</slot>
+  <slot>OpenProj()</slot>
+  <slot>RemoveProj()</slot>
+  <slot>RedirectListObj()</slot>
+  <slot>CreateProj()</slot>
+  <slot>OpenProjectWithPathDialog()</slot>
+ </slots>
+</ui>
