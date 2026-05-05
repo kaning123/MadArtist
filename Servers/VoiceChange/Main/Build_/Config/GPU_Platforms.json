@@ -1,0 +1,12 @@
+{
+    "Inst_Platform_URLs": {
+        "Nvidia": "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/RVC1006Nvidia.7z",
+        "AMD": "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/RVC1006AMD_Intel.7z",
+        "Intel": "https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/RVC1006AMD_Intel.7z"
+    },
+    "ZH_CN_Quick_Installation_Sources": {
+        "HF_Mirror_Nvidia": "https://hf-mirror.com/lj1995/VoiceConversionWebUI/resolve/main/RVC1006Nvidia.7z",
+        "HF_Mirror_AMD": "https://hf-mirror.com/lj1995/VoiceConversionWebUI/resolve/main/RVC1006AMD_Intel.7z",
+        "HF_Mirror_Intel": "https://hf-mirror.com/lj1995/VoiceConversionWebUI/resolve/main/RVC1006AMD_Intel.7z"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "Using_GPU_Platform_Installation_Sources": true,
+    "GPU_Platform": "Nvidia",
+    "Using_ZH_CN_Quick_Installation_Sources": false,
+    "Source": "HF_Mirror_Nvidia"
+}
