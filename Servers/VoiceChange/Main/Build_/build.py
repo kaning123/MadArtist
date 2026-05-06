@@ -20,21 +20,22 @@ with open(str(fl.merge_dir_txt(CONFIG_DIR, 'Main.json')), 'r') as f:
     CONFIG = json.load(f)
 with open(str(fl.merge_dir_txt(CONFIG_DIR, 'GPU_Platforms.json')), 'r') as f:
     GPU_PLATFORMS = json.load(f)
-
+print("Configuration Loaded:", CONFIG)
 Using_GPU_Platform_Installation_Sources = CONFIG.get("Using_GPU_Platform_Installation_Sources", True)
 GPU_Platform = CONFIG.get("GPU_Platform", "Nvidia")
 if Using_GPU_Platform_Installation_Sources:
-    URL = GPU_PLATFORMS.get(GPU_Platform, URL_DEFAULT)
+    URL = GPU_PLATFORMS["Inst_Platform_URLs"].get(GPU_Platform, URL_DEFAULT)
 else:
     URL = URL_DEFAULT
-
+print(f"url: {URL}")
 Using_ZH_CN_Quick_Installation_Sources = CONFIG.get("Using_ZH_CN_Quick_Installation_Sources", False)
+print(f"Using_ZH_CN_Quick_Installation_Sources: {Using_ZH_CN_Quick_Installation_Sources}")
 Source = CONFIG.get("Source", "HF_Mirror_Nvidia")
 if Using_ZH_CN_Quick_Installation_Sources:
-    URL = GPU_PLATFORMS.get(Source, URL)
+    URL = GPU_PLATFORMS["ZH_CN_Quick_Installation_Sources"].get(Source, URL)
 else:
     URL = URL
-
+print(f"Final URL: {URL}")
 
 def download_file(url, save_path):
     try:
@@ -51,7 +52,8 @@ def download_file(url, save_path):
     return True
 
 def check_installed(path):
-    res = fs.search_file_by_name(path, 'ffmpeg.exe')
+    res = fs.search_file_by_name(path, 'requirements-win-for-realtime_vc_gui.txt')
+    LOGGER.debug(f"Checking installation at {path}, found: {res}")
     if len(res) > 0:
         return True, res[0].store_location
     return False,None
@@ -65,7 +67,7 @@ def extract_file(file_path, extract_path):
 def install_RVC():
     if not fl.file_exists(THIRD_PARTY_DIR):
         LOGGER.warning(f"ThirdParty dir not exists, create it: {THIRD_PARTY_DIR}")
-    res = check_installed(THIRD_PARTY_DIR)
+    res = check_installed(fl.merge_dir_txt(THIRD_PARTY_DIR, 'RVC'))
     if res[0]:
         LOGGER.info(f"RVC already installed: {res[1]}")
         return res[1]
@@ -92,7 +94,7 @@ def main():
     LOGGER.info("Start build")
     inst_location = install_RVC()
     LOGGER.debug(f"RVC installed at: {inst_location}")
-    root_location = fs.search_file_by_name(inst_location, 'ffmpeg.exe')[0].store_location
+    root_location = fs.search_file_by_name(inst_location, 'requirements-win-for-realtime_vc_gui.txt')[0].store_location
     LOGGER.debug(f"Root location: {root_location}")
 
     print(f"<install_location>{inst_location}</install_location>")

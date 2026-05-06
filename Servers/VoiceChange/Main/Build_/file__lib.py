@@ -16,7 +16,9 @@ def merge_dir_txt(a,b):
     return c
 def merge_dir_txt2(*TXT):
     return Path(os.path.join(*TXT))
-def create_dir(path: Path, overwrite=False) -> bool:
+def create_dir(path: Path|str, overwrite=False) -> bool:
+    if isinstance(path,str):
+        path = Path(path)
     if overwrite and path.exists():
         shutil.rmtree(path)
     path = Path(path)
@@ -28,9 +30,11 @@ def get_dir_children_files(path: Path):
     return [item for item in path.iterdir() if item.is_file()]
 def delete_dir(path: Path):
     return shutil.rmtree(path)
-def delete_file(path: Path):
+def delete_file(path: Path|str):
+    if isinstance(path,str):
+        path = Path(path)
     return os.remove(path)
-def file_exists(path: Path):
+def file_exists(path: Path|str):
     path = Path(path)
     return path.exists()
 
