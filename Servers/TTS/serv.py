@@ -6,6 +6,7 @@ from edge_tts import VoicesManager
 import os
 from pathlib import Path
 from uuid import uuid4
+import json
 
 def get_my_dir():
     return os.path.dirname(os.path.abspath(__file__))
@@ -15,11 +16,13 @@ def merge_dir_txt2(*TXT):
 
 MY_DIR = get_my_dir()
 TEMP_DIR = merge_dir_txt2(MY_DIR, "Temp")
-
+CONFIG_DIR = merge_dir_txt2(MY_DIR, "Config")
+with open(merge_dir_txt2(CONFIG_DIR, "TTS_List_Filiter.json"), "r", encoding="utf-8") as f:
+    FILTER_LIST = json.load(f)
 
 async def list_voices():
     voices = await VoicesManager.create()
-    filtered_voices = voices.find()
+    filtered_voices = voices.find(**FILTER_LIST)
     ret = []
     for voice in filtered_voices:
         ret.append(voice)
