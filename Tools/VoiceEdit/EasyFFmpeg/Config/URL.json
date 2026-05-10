@@ -1,0 +1,18 @@
+{
+    "Sources": [
+        {
+            "Name": "GitHub",
+            "URLs": {
+                "DownloadFile": "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip",
+                "CheckSum": "https://kkgithub.com/BtbN/FFmpeg-Builds/releases/download/latest/checksums.sha256"
+            }
+        },
+        {
+            "Name": "KGitHub",
+            "URLs": {
+                "DownloadFile": "https://kkgithub.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl-shared.zip",
+                "CheckSum": "https://kkgithub.com/BtbN/FFmpeg-Builds/releases/download/latest/checksums.sha256"
+            }
+        }
+    ]
+}
