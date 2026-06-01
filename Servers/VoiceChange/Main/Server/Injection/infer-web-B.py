@@ -1,3 +1,26 @@
+import logging
+
+# 1. 创建一个格式器
+DEBUG_WEBUI_PY = True
+if DEBUG_WEBUI_PY:
+    formatter = logging.Formatter(
+        '[%(asctime)s/%(levelname)s][%(name)s/%(filename)s:%(lineno)d]: %(message)s'
+    )
+
+    # 2. 创建一个处理器（这里以控制台输出为例）
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+
+    # 3. 获取根记录器
+    root_logger = logging.getLogger()
+    # 清理现有的处理器，避免重复输出
+    root_logger.handlers.clear()
+    # 添加自定义处理器
+    root_logger.addHandler(console_handler)
+    # 设置根记录器的日志级别
+    root_logger.setLevel(logging.DEBUG)
+
+
 import os
 import sys
 from dotenv import load_dotenv
@@ -29,7 +52,7 @@ import warnings
 import traceback
 import threading
 import shutil
-import logging
+#import logging
 
 import os
 import shutil
@@ -190,14 +213,22 @@ for name in os.listdir(weight_uvr5_root):
 
 def change_choices():
     names = []
+    with open(str(merge_dir_txt2(get_my_dir(),"injected.json")),"r") as f:
+        injected = json.load(f)
+    injected_ = injected.get("weights",[])
     for name in os.listdir(weight_root):
         if name.endswith(".pth"):
             names.append(name)
+    names.extend(injected_)
     index_paths = []
+    injected_ = injected.get("indexs",[])
     for root, dirs, files in os.walk(index_root, topdown=False):
         for name in files:
             if name.endswith(".index") and "trained" not in name:
                 index_paths.append("%s/%s" % (root, name))
+    for name in injected_:
+        if name.endswith(".index") and "trained" not in name:
+            index_paths.append(name)
     return {"choices": sorted(names), "__type__": "update"}, {
         "choices": sorted(index_paths),
         "__type__": "update",
@@ -810,6 +841,11 @@ def change_f0_method(f0method8):
         visible = False
     return {"visible": visible, "__type__": "update"}
 
+def wrapped_get_vc(sid ,*to_return_protect):
+    print("sid",sid)
+    print("to_return_protect",to_return_protect)
+    return vc.get_vc(sid,*to_return_protect)
+
 
 with gr.Blocks(title="RVC WebUI") as app:
     gr.Markdown("## RVC WebUI")
@@ -1082,7 +1118,7 @@ with gr.Blocks(title="RVC WebUI") as app:
                         api_name="infer_convert_batch",
                     )
                 sid0.change(
-                    fn=vc.get_vc,
+                    fn=wrapped_get_vc,
                     inputs=[sid0, protect0, protect1],
                     outputs=[spk_item, protect0, protect1, file_index2, file_index4],
                     api_name="infer_change_voice",
