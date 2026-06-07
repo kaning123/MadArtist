@@ -2,6 +2,7 @@
     "ModuleName": "VoiceChange",
     "Author": "Kaning123",
     "__INNER_VERSION__": "Alpha_0.0.1_202605",
+    "ServerIP": "localhost",
     "ServerPort": 14514,
     "ThirdParty": {
         "RVC": {
@@ -9,6 +10,9 @@
         },
         "7-zip":{
             "URL": "https://www.7-zip.org"
+        },
+        "Everything":{
+            "URL": "https://www.voidtools.com/"
         }
     }
 }
