@@ -1,9 +1,12 @@
 import subprocess
 import time
-import file_lib as fl
-import log_lib
+from . import file_lib as fl
+from . import log_lib
 
-with open(fl.merge_dir_txt2(fl.get_my_dir(), "format_disk.bat"), "r") as f:
+with open(fl.merge_dir_txt2(fl.get_my_dir(), 
+                            "format_disk.bat"), 
+          "r",
+            encoding='utf-8') as f:
     default_bat = f.read()
 
 format_disk_bat = r'''@echo off
@@ -29,6 +32,7 @@ if '%errorlevel%' NEQ '0' (
 
 :gotAdmin
 :: 确认已获取管理员权限，切换到脚本所在目录
+    chcp 65001 >nul
     pushd "%CD%"
     CD /D "%~dp0"
 
@@ -86,7 +90,7 @@ def main(letter: str,
     try:
         logger = log_lib.LogStream("format_disk", dir_path=fl.merge_dir_txt(fl.get_my_dir(),'Log'), f_display=True, c_display=True).logger
 
-        with open(fl.merge_dir_txt2(fl.get_my_dir(), "format_disk.bat"), "w") as f:
+        with open(fl.merge_dir_txt2(fl.get_my_dir(), "format_disk.bat"), "w", encoding='utf-8') as f:
             f.write(format_disk_bat.format(NTFS=fs, RamDisk_=diskname))
         logger.info(f"开始格式化磁盘 {letter}，请勿关闭此窗口")
         bat_path = fl.merge_dir_txt2(fl.get_my_dir(), "format_disk.bat")
@@ -105,7 +109,10 @@ def main(letter: str,
         logger.error(f"格式化失败，超时退出，已等待{max_retry*_await}秒")
         raise FormatDiskError(f"格式化失败，超时退出，已等待{max_retry*_await}秒")
     finally:
-        with open(fl.merge_dir_txt2(fl.get_my_dir(), "format_disk.bat"), "w") as f:
+        with open(fl.merge_dir_txt2(fl.get_my_dir(), 
+                                    "format_disk.bat"), 
+                  "w",
+                  encoding='utf-8') as f:
             f.write(default_bat)
 if __name__ == "__main__":
     main("Z:")

@@ -1,9 +1,9 @@
-import cmd_downloader
+from . import cmd_downloader
 import subprocess
-import file_lib as fl
+from . import file_lib as fl
 from pathlib import Path
-from silence_installer import silence_install_exe
-import log_lib
+from .silence_installer import silence_install_exe
+from . import log_lib
 import traceback
 
 _7ZIP_URL = "https://www.7-zip.org/a/7z{ver_without_dot}-x64.exe"

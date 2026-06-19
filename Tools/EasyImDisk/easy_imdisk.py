@@ -1,15 +1,17 @@
-import cmd_downloader
-from log_lib import LogStream as LS
-import log_lib
-import file_lib as fl
+import sys
+from . import file_lib as fl
+from . import cmd_downloader
+from .log_lib import LogStream as LS
+from . import log_lib
 from pathlib import Path
-import easy_7zip as ez7
+from . import easy_7zip as ez7
 import subprocess
-import run_as_lib
-import format_lib   
+from . import run_as_lib
+from . import format_lib   
 import os
 import sys
 import time
+sys.path.pop()
 
 IMDISK_DEFAULT_PATH = fl.merge_dir_txt2(fl.get_my_dir(), "ThirdParty", "ImDisk")
 IMDISK_URL = "https://sf-west-interserver-1.dl.sourceforge.net/project/imdisk-toolkit/20250206/ImDiskTk-x64.zip?viasf=1"

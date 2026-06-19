@@ -21,6 +21,7 @@ if '%errorlevel%' NEQ '0' (
 
 :gotAdmin
 :: 确认已获取管理员权限，切换到脚本所在目录
+    chcp 65001 >nul 
     pushd "%CD%"
     CD /D "%~dp0"
 

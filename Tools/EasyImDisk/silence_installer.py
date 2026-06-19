@@ -1,8 +1,8 @@
 import subprocess
 from pathlib import Path
-import log_lib
-import UAC_lib as uac
-import file_lib as fl
+from . import log_lib
+from . import UAC_lib as uac
+from . import file_lib as fl
 LOG_DIR = fl.merge_dir_txt2(fl.get_my_dir(),"Log")
 
 def silence_install_exe(FilePath:Path,DistPath:Path):
