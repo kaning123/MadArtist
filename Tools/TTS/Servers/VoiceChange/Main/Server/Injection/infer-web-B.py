@@ -1,14 +1,22 @@
 import logging
+import rich
+from rich.console import Console
+from rich.traceback import Traceback
+from rich.logging import RichHandler
+import click
+import json
 
 # 1. 创建一个格式器
 DEBUG_WEBUI_PY = True
 if DEBUG_WEBUI_PY:
     formatter = logging.Formatter(
-        '[%(asctime)s/%(levelname)s][%(name)s/%(filename)s:%(lineno)d]: %(message)s'
+        f'[%(processName)s:%(process)d][%(threadName)s:%(thread)d][%(name)s][Func:%(funcName)s] - at %(pathname)s: %(message)s',datefmt='%Y-%m-%d/%H:%M:%S'
     )
 
     # 2. 创建一个处理器（这里以控制台输出为例）
-    console_handler = logging.StreamHandler()
+    console_handler = RichHandler(rich_tracebacks=True, 
+                                  tracebacks_suppress=[click],
+                                  log_time_format="[%H:%M:%S]")
     console_handler.setFormatter(formatter)
 
     # 3. 获取根记录器

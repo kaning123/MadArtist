@@ -17,8 +17,16 @@ import zipfile
 import base64
 import log_lib
 import time
+import EasyImDisk
+import rich
+from rich.console import Console
+console = Console()
 
-LOGGER = log_lib.get_logger("API", fl.merge_dir_txt(fl.get_my_dir(), "Log"), log_lib.DEBUG, f_display=True).logger
+LOGGER = log_lib.get_logger("API", 
+                            fl.merge_dir_txt(fl.get_my_dir(), 
+                                             "Log"), 
+                            log_lib.DEBUG, 
+                            f_display=True).logger
 
 
 def get_all_file(path,type_):
@@ -36,6 +44,16 @@ def get_all_file_name(path,type_):
     for path in full_paths:
         file_names.add(os.path.basename(path))
     return file_names
+
+async def await_file(file_path,
+                     timeout: float | int = 1000):
+    x = 0
+    while not os.path.exists(file_path):
+        await asyncio.sleep(0.1)
+        x += 0.1
+        if x > timeout:
+            raise TimeoutError(f"File {file_path} not found after {timeout} seconds")
+    return x
 
 TEMP_DIR = fl.merge_dir_txt2(fl.get_my_dir(), "Temp")
 shutil.rmtree(TEMP_DIR, ignore_errors=True) if TEMP_DIR.exists() else None
@@ -172,9 +190,16 @@ async def Voice_Change(Voice_pth,
 
 async def Voice_Change_Batch(Voice_pth,index_path, 
                              wav_dir_path, 
-                             PitchExtraction="pm",
+                             PitchExtraction = "pm",
                              do_change_voice = True,
-                             await_opt:int = 100):
+                             await_opt: float | int = 100,
+                             a: float | int = 0,
+                             retry_times = 5,
+                             retry_depth = 0):
+
+    if retry_depth > retry_times:
+        raise Exception(f"Retry times exceeded: {retry_depth}")
+
     if do_change_voice:
 
         await change_voice_pth(Voice_pth)
@@ -184,7 +209,7 @@ async def Voice_Change_Batch(Voice_pth,index_path,
     OPT_DIR = str(fl.merge_dir_txt2(RVC_ROOT,"opt"))
     if os.path.exists(OPT_DIR):
         shutil.rmtree(OPT_DIR)
-
+    wav_num = len(os.listdir(wav_dir_path))
     response = requests.post("http://localhost:7897/run/infer_convert_batch", json={
         "data": [
             0,
@@ -202,23 +227,74 @@ async def Voice_Change_Batch(Voice_pth,index_path,
             0.33,
             "wav",
         ]})
-    await asyncio.sleep(5)
+    a += await await_file(fl.merge_dir_txt2(OPT_DIR,
+                                           "info.json"), 
+                         await_opt*wav_num)
+    with open(fl.merge_dir_txt2(OPT_DIR,"info.json"), "r") as f:
+        info = json.load(f)
+        if info["fail"] > 0:
+            retrys = info["fail_info"]
+            success = info["succ_info"]
+            for file in os.listdir(OPT_DIR):
+                shutil.move(os.path.join(OPT_DIR, file), output_dir)
+            for file in success:
+                os.remove(os.path.join(wav_dir_path, file)) # delete successful files
+            return Voice_Change_Batch(Voice_pth, index_path, 
+                                        wav_dir_path, 
+                                        PitchExtraction=PitchExtraction,
+                                        do_change_voice=do_change_voice,
+                                        await_opt=await_opt,
+                                        a=a,
+                                        retry_times=retry_times,
+                                        retry_depth=retry_depth+1)
     data = response.json()["data"]
     LOGGER.info(f"Response: {data}")
     if not os.path.exists(output_dir):
         fl.create_dir(Path(output_dir))
-    retry = 0
-    while retry < await_opt:
-        retry += 1
-        await asyncio.sleep(1)
-        if not os.path.exists(OPT_DIR):
-            continue
-        break
     if not os.path.exists(OPT_DIR):
         raise Exception(f"Output directory {OPT_DIR} not found")
     for file in os.listdir(OPT_DIR):
         shutil.move(os.path.join(OPT_DIR, file), output_dir)
-    return {"output_dir": output_dir}
+    return {"output_dir": output_dir, "await_time": a}
+
+async def Voice_Change_Batch_V2(Voice_pth,index_path, 
+                             wav_dir_path, 
+                             PitchExtraction = "pm",
+                             do_change_voice = True,
+                             await_opt: float | int = 100,
+                             a: float | int = 0,
+                             retry_times = 5,
+                             retry_depth = 0,
+                             retry2 = 5,
+                             retry2_depth = 0):
+    try:
+        retry2_depth += 1
+        return await Voice_Change_Batch(Voice_pth, index_path, 
+                                        wav_dir_path, 
+                                        PitchExtraction=PitchExtraction,
+                                        do_change_voice=do_change_voice,
+                                        await_opt=await_opt,
+                                        a=a,
+                                        retry_times=retry_times,
+                                        retry_depth=retry_depth)
+    except Exception as e:
+        console.print_exception(show_locals=True)
+        if retry2_depth > retry2:
+            try:
+                raise Exception(f"Retry times exceeded: {retry2_depth}")
+            except:
+                console.print_exception(show_locals=True)
+        else:
+            return await Voice_Change_Batch_V2(Voice_pth, index_path, 
+                                        wav_dir_path, 
+                                        PitchExtraction=PitchExtraction,
+                                        do_change_voice=do_change_voice,
+                                        await_opt=await_opt,
+                                        a=a,
+                                        retry_times=retry_times,
+                                        retry_depth=retry_depth+1,
+                                        retry2=retry2,
+                                        retry2_depth=retry2_depth)
 
 app = fastapi.FastAPI()
 @app.get("/get/list/{TYPE_}")
@@ -307,7 +383,7 @@ async def change_voice_batch(voice_name: str,
     for file in files:
         with open(str(fl.merge_dir_txt2(Temp_Wav,file.filename)), "wb") as f:
             f.write(await file.read())
-    output = await Voice_Change_Batch(voice_name, 
+    output = await Voice_Change_Batch_V2(voice_name, 
                                       index_path, 
                                       Temp_Wav, 
                                       PitchExtraction="pm",

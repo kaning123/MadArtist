@@ -242,6 +242,10 @@ class VC:
         format1,
     ):
         try:
+            succ = 0
+            fail = 0
+            succ_infox = []
+            fail_infox = []
             dir_path = (
                 dir_path.strip(" ").strip('"').strip("\n").strip('"').strip(" ")
             )  # 防止小白拷路径头尾带了空格和"和回车
@@ -276,14 +280,23 @@ class VC:
                 )
                 if "Success" in info:
                     try:
+                        succ += 1
+                        succ_infox.append(os.path.basename(path))
                         tgt_sr, audio_opt = opt
                         if format1 in ["wav", "flac"]:
-                            sf.write(
-                                "%s/%s.%s"
-                                % (opt_root, os.path.basename(path), format1),
-                                audio_opt,
-                                tgt_sr,
-                            )
+                            if not path.endswith(format1):
+                                sf.write(
+                                    "%s/%s.%s"
+                                    % (opt_root, os.path.basename(path), format1),
+                                    audio_opt,
+                                    tgt_sr,
+                                )
+                            else:
+                                sf.write("%s/%s" 
+                                         % (opt_root, os.path.basename(path), ),
+                                        audio_opt,
+                                        tgt_sr,
+                                )
                         else:
                             path = "%s/%s.%s" % (
                                 opt_root,
@@ -297,8 +310,23 @@ class VC:
                                     wav2(wavf, outf, format1)
                     except:
                         info += traceback.format_exc()
+                        succ -= 1
+                        succ_infox.pop()
+                        fail_infox.append(os.path.basename(path))
+                        fail += 1
+                else:
+                    fail += 1
+                    fail_infox.append(os.path.basename(path))
+                    
                 infos.append("%s->%s" % (os.path.basename(path), info))
                 yield "\n".join(infos)
+            with open("%s/info.json" % opt_root, "w") as f:
+                import json
+                ret = {"succ": succ, 
+                       "fail": fail, 
+                       "succ_info": succ_infox, 
+                       "fail_info": fail_infox, }
+                json.dump(ret, f, ensure_ascii=False, indent=4)
             yield "\n".join(infos)
         except:
             yield traceback.format_exc()

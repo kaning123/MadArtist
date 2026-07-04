@@ -1,0 +1,16 @@
+{
+    "Servers": [
+        {
+            "Name": "Main",
+            "class": "TTS",
+            "IP": "localhost",
+            "Ports": [11451]
+        },
+        {
+            "Name": "Main",
+            "class": "VoiceChange",
+            "IP": "localhost",
+            "Port": [14514,7897]
+        }
+    ]
+}
