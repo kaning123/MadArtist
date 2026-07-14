@@ -10,7 +10,8 @@ DEBUG = logging.DEBUG
 WARN = logging.WARN
 ERROR = logging.ERROR
 CRITICAL = logging.CRITICAL
-
+MY_DIR = file_lib.get_my_dir()
+LOG_DIR = file_lib.merge_dir_txt(MY_DIR, "Log")
 POOL:set = set() #LOGGER POOL
 def get_unique_name(name):
     _id = 1
@@ -21,7 +22,14 @@ def get_unique_name(name):
         name = f'{name}_{_id}'
     return name
 class LogStream:
-    def __init__(self, logger_name,dir_path,LVL=DEBUG,file_name=f'log.log',theme = DEFAULT_THEME,c_display=True,f_display=False):
+    def __init__(self, 
+                 logger_name,
+                 dir_path = LOG_DIR,
+                 LVL=DEBUG,
+                 file_name=f'log.log',
+                 theme = DEFAULT_THEME,
+                 c_display=True,
+                 f_display=False):
         
         file_name = f'logger_[{logger_name}][{time_lib.get_time_full()}]_{file_name}'
         filepath = file_lib.merge_dir_txt(dir_path,file_name)
@@ -79,7 +87,13 @@ class LogStream:
     def critical(self,*MSG,joiner=' '):
         self.log(*MSG,LVL=CRITICAL,joiner=joiner)
         
-def get_logger(logger_name,dir_path,LVL=DEBUG,file_name=f'log.log',theme = DEFAULT_THEME,c_display=True,f_display=False):
+def get_logger(logger_name,
+               dir_path = LOG_DIR,
+               LVL=DEBUG,
+               file_name=f'log.log',
+               theme = DEFAULT_THEME,
+               c_display=True,
+               f_display=False):
     return LogStream(logger_name,dir_path,LVL,file_name,theme,c_display,f_display)
 
 

@@ -1,16 +1,10 @@
 {
     "Servers": [
         {
-            "Name": "Main",
-            "class": "TTS",
-            "IP": "localhost",
-            "Ports": [11451]
-        },
-        {
-            "Name": "Main",
+            "Name": "RVC_Based_VoiceChange",
             "class": "VoiceChange",
             "IP": "localhost",
-            "Port": [14514,7897]
+            "Port": 5418
         }
     ]
 }
