@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 import json
 import rich
+import subprocess
 from rich.console import Console
 console = Console()
 
@@ -30,7 +31,8 @@ with open(fl.merge_dir_txt(CONFIG_DIR, 'Build.json'), 'r') as f:
 RVC_ROOT = json_data.get("root_location", "")
 if RVC_ROOT == "":
     Build.Build()
-    raise PleaseRebootBootScript
+    subprocess.run([sys.executable, __file__])
+    sys.exit(0)
     raise ModuleNotFoundError("RVC installation not found. Please run \"python build.py\" first.")
 RVC_RUNTIME = fl.merge_dir_txt2(RVC_ROOT, 'Runtime',"python.exe")
 os.chdir(str(RVC_ROOT))

@@ -11,6 +11,7 @@ from rpyc.utils.server import ThreadedServer
 import tempfile
 import zipfile
 import os
+import soundfile as sf
 
 def create_empty_zip_temp_path():
     """生成一个临时的空 ZIP 文件，返回其路径（文件在 close 后自动删除）"""
@@ -872,7 +873,13 @@ def wrapped_get_vc(sid ,*to_return_protect):
     print("to_return_protect",to_return_protect)
     return vc.get_vc(sid,*to_return_protect)
 
-f0_file_ = create_empty_zip_temp_path()
+import uuid
+import shutil
+if os.path.exists("WavOutput"):
+    shutil.rmtree("WavOutput")
+os.makedirs("WavOutput")
+f0_file_ = gr.File()
+
 class RVC_Service(rpyc.Service):
     def exposed_get_vc(self,
                        sid0, 
@@ -924,10 +931,19 @@ class RVC_Service(rpyc.Service):
                            resample_sr0,
                            rms_mix_rate0,
                            protect0,)
-        return ret
-server = ThreadedServer(RVC_Service, port=5418)
+        MY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "WavOutput")
+        sample_rate, output_audio = ret[1][0], ret[1][1] # type: ignore
+        OutPutName = "WavOutput%s.wav" % uuid.uuid4().hex
+        OutPutName = os.path.join(MY_DIR, OutPutName) 
+        sf.write(OutPutName,
+                 output_audio,
+                 sample_rate) 
+        return OutPutName, sample_rate
+    
+server = ThreadedServer(RVC_Service, port=5418,hostname="localhost")
 server.start()
-if __name__ == "__main__":
+
+if __name__ == "__main__" and False:
     with gr.Blocks(title="RVC WebUI") as app:
         gr.Markdown("## RVC WebUI")
         gr.Markdown(
