@@ -5,8 +5,8 @@ import json
 import pathlib
 import asyncio
 import uuid
-import file_lib as fl
-import file_lib_v2 as flv2
+from . import file_lib as fl
+from . import file_lib_v2 as flv2
 import numpy as np
 import copy
 ROOT_DIR = fl.get_parent_dir(fl.get_my_dir(),6)
