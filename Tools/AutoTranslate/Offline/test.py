@@ -22,7 +22,7 @@ try:
 except Exception as e:
     logger.exception("更新包索引时发生异常")
 
-
+# ---------- 原有函数（添加日志） ----------
 def get_all_langs() -> tuple[set, set]:
     """获取所有支持的语言（源语言和目标语言）"""
     logger.debug("调用 get_all_langs")
@@ -58,7 +58,7 @@ def detect_lang(text: str) -> str:
         result = fast_langdetect.detect(text, model='lite', k=1)
         lang = result[0]['lang']
         logger.info(f"检测到语言: {lang}")
-        return lang # type: ignore
+        return lang
     except Exception as e:
         logger.exception("语言检测失败")
         raise
@@ -91,4 +91,3 @@ def translate_texts(texts: list[str], from_lang: str = 'auto', to_lang: str = "z
             ret.append("")   # 或根据需求抛出异常
     logger.info(f"批量翻译完成，成功 {len(ret)} 条")
     return ret
-

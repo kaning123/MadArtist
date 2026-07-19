@@ -1,6 +1,6 @@
-import Online.Main as MainOnline
-import Offline.Main as MainOffline
-import web_check
+from .Online import Main as MainOnline
+from .Offline import Main as MainOffline
+from . import web_check
 
 def detect_lang(text):
     return MainOffline.detect_lang(text)
