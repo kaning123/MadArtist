@@ -1,0 +1,10 @@
+{
+    "Servers": [
+        {
+            "Name": "RVC_Based_VoiceChange",
+            "class": "VoiceChange",
+            "IP": "localhost",
+            "Port": 5418
+        }
+    ]
+}

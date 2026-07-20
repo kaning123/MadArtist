@@ -1,0 +1,14 @@
+{
+    "class": "VoiceChange",
+    "Name": "RVC_Based_VoiceChange",
+    "Author": "Kaning123",
+    "Version": "Alpha_0.0.1_20260704",
+    "Description": "基于RVC的变声服务器",
+    "MadPathNameSpace": {
+        "BootPy": ["~~##MY_DIR##~~","..","~~##CLASS##~~","Main","Server","boot.py"],
+        "PythonExecutable": ["~~##PYTHON_EXECUTABLE##~~"]
+    }, 
+    "Execution": ["-<PythonExecutable>-","-<BootPy>-"],
+    "IP": "localhost",
+    "Port": 5418
+}
