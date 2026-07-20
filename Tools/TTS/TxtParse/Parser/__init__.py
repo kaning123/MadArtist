@@ -48,6 +48,7 @@ def load_pkg_file(file = str(merge_dir_txt2(get_my_dir(), ".pkg_active"))):
 for i in load_pkg_file():
     globals()[i] = importlib.import_module(f'.{i}', package=__name__)
 
-def load_generator(generator_name):
-    module_name = globals().get(generator_name, None)
-    return module_name.Main
+def get_parser(name):
+    ret = globals().get(name, None)
+    return ret.parse_text if ret else None
+
