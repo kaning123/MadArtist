@@ -1,3 +1,0 @@
-rpyc==6.0.2
-plumbum==2.0.1
-typing_extensions==4.15.0
