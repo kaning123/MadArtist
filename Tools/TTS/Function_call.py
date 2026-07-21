@@ -14,7 +14,24 @@ from rich.console import Console
 
 
 console = Console()
-logger = log_lib.LogStream("Function_Call_Debug",).logger
+logger_ = log_lib.LogStream("Function_Call_Debug",).logger
+
+import click
+import time
+import logging
+from logging.handlers import RotatingFileHandler
+from rich.logging import RichHandler
+from rich.console import Console
+
+console = Console()
+logging.basicConfig(
+    level="NOTSET",
+    format="%(message)s",
+    datefmt="[%Y.%m.%d-%X]",
+    handlers=[RichHandler(rich_tracebacks=True, tracebacks_suppress=[click]),]
+)
+logger = logging.getLogger(__name__)
+
 STORAGE_DIR = fl.merge_dir_txt2(fl.get_my_dir(), "Storage")
 CONFIG_DIR = fl.merge_dir_txt2(STORAGE_DIR, "Config")
 LOCAL_TEMP_DIR = fl.merge_dir_txt2(fl.get_my_dir(), "Temp")
@@ -101,12 +118,22 @@ class MadFileBatch:
     def __del__(self):
         self.cleanup()
 
+def have_str_in_str(a,b):
+    return a in b
+
+
 def flite_path(obj:list[str]|str, input_:list[str]|str):
     ret = []
     if isinstance(obj, str):
         obj = [obj]
     if isinstance(input_, str):
         input_ = [input_]
+    if isinstance(input_, Path):
+        input_ = [str(input_)]
+    if isinstance(input_[0], Path):
+        input_ = [str(i) for i in input_] # type: ignore
+    
+
     for o in obj:
         for i in input_:
             if o in i:
@@ -167,7 +194,10 @@ async def get_list() -> list:
     res = requests.get("http://localhost:8848/get/list/BaseVoiceGenerator")
     return res.json()
 
-async def Generate_BaseVoice(Voice, text):
+async def Generate_BaseVoice(Voice, 
+                             text,
+                             SaveName:str|Path = "TTS_Generate_Wav",
+                             UsingStaticSaveName=False):
     if isinstance(Voice, str):
         Voice = Voice
     elif isinstance(Voice, dict):
@@ -178,8 +208,15 @@ async def Generate_BaseVoice(Voice, text):
         raise TypeError("Voice should be str, dict or list")
     url = f"http://localhost:8848/get/wav/BaseVoiceGenerator/{Voice}/{text}"
     res = requests.get(url)
-    with open(str(fl.merge_dir_txt2(STORAGE_DIR, f"{Voice}.wav")), "wb") as f:
+
+    if not UsingStaticSaveName:
+        SaveName = f"{SaveName}_{uuid.uuid4()}"
+    SaveName = f"{SaveName}.wav"
+    
+    ret = str(fl.merge_dir_txt2(LOCAL_TEMP_DIR, SaveName))
+    with open(ret, "wb") as f:
         f.write(res.content)
+    return ret
 
 async def post_files(url, files):
         res = requests.post(url, files=files)
@@ -300,7 +337,7 @@ async def ChangeVoice(VoicePth:str|Path,
             TempZipFile.fileobj.close()
             with zipfile.ZipFile(TempZipFile.path, "r") as zip_ref:
                 zip_ref.extractall(OutputPath)
-    return res
+    return OutputPath
 
 async def WrappedChangeVoice(VoicePth: str | Path,
                       VoiceIndex: str | Path,

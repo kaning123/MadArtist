@@ -46,7 +46,7 @@ def load_pkg_file(file = str(merge_dir_txt2(get_my_dir(), ".pkg_active"))):
             l = f.readline()
 
 for i in load_pkg_file():
-    globals()[i] = importlib.import_module(f'.{i}', package=__name__)
+    globals()[i.strip()] = importlib.import_module(f'.{i.strip()}', package=__name__)
 
 def get_parser(name):
     ret = globals().get(name, None)

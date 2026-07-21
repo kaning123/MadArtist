@@ -1,7 +1,7 @@
-from .MadLib import MadProcessManager,MadCMD,MadPath
+from MadLib import MadProcessManager,MadCMD,MadPath
 import json
 import threading
-from . import LogLib
+import LogLib
 import logging
 import click
 from logging.handlers import RotatingFileHandler
@@ -9,7 +9,7 @@ from rich.logging import RichHandler
 from rich.console import Console
 import subprocess
 from typing import List, Dict, Optional, Any
-from . import file_lib as fl
+import file_lib as fl
 import sys
 from pathlib import Path
 import time

@@ -19,9 +19,9 @@ try:
 except ImportError:
     sys.path = new_path
     raise ImportError("Tools.AutoTranslate module not found.")
-
+sys.path = new_path
 # 加载配置文件
-with open(os.path.join(os.path.dirname(__file__), "Config", "Settings.json"), "r") as f:
+with open(os.path.join(fl.get_my_dir(), "Config", "Settings.json"), "r") as f:
     settings = json.load(f)
 
 SETTINGS_EXAMPLE = {

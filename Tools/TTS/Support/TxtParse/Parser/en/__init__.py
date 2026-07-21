@@ -4,5 +4,5 @@ def parse_text(text):
 def parse_txts(txts):
     ret = []
     for txt in txts:
-        ret.append(parse_text(txt))
+        ret.append(f"{parse_text(txt)},")
     return ret
