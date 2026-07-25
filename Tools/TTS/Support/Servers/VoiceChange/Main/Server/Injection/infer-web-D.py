@@ -898,46 +898,72 @@ class RVC_Service(rpyc.Service):
     def exposed_vc_single__(self,
                             input_audio0,
                             file_index,
-                            spk_item : int = 0,
-                            vc_transform0 : int = 0,
-                            f0method0 : str = "rmvpe",
-                            index_rate1 : float = 0.75,
-                            filter_radius0 : int = 3,
-                            resample_sr0 : int = 0,
-                            rms_mix_rate0 : float = 0.25,
-                            protect0 : float = 0.33,):
-        ''':param spk_item: 说话人id
-        :param input_audio0: 输入待处理音频文件路径
-        :param vc_transform0: 变调(整数, 半音数量, 升八度12降八度-12)
-        :param f0method0: 选择音高提取算法,输入歌声可用pm提速,harvest低音好但巨慢无比,crepe效果好但吃GPU,rmvpe效果最好且微吃GPU
-        :param file_index: 特征检索库文件路径
-        :param index_rate1: 检索特征占比
-        :param filter_radius0: >=3则使用对harvest音高识别的结果使用中值滤波，数值为滤波半径，使用可以削弱哑音
-        :param resample_sr0: 后处理重采样至最终采样率，0为不进行重采样
-        :param rms_mix_rate0: 输入源音量包络替换输出音量包络融合比例，越靠近1越使用输出包络
-        :param protect0: 保护清辅音和呼吸声，防止电音撕裂等artifact，拉满0.5不开启，调低加大保护力度但可能降低索引效果
-        :return vc_output1: 输出信息
-        :return vc_output2: 输出音频
-        '''
+                            spk_item: int = 0,
+                            vc_transform0: int = 0,
+                            f0method0: str = "rmvpe",
+                            index_rate1: float = 0.75,
+                            filter_radius0: int = 3,
+                            resample_sr0: int = 0,
+                            rms_mix_rate0: float = 0.25,
+                            protect0: float = 0.33):
+        # 1. 确保输入路径是字符串
+        if not isinstance(input_audio0, str):
+            input_audio0 = str(input_audio0)
+        if input_audio0 is None or not os.path.exists(input_audio0):
+            raise FileNotFoundError(f"Input audio not found: {input_audio0}")
+
+        # 2. 调用 RVC 核心处理
         ret = vc.vc_single(spk_item,
-                           input_audio0,
-                           vc_transform0,
-                           f0_file_,
-                           f0method0,
-                           file_index,
-                           file_index,
-                           index_rate1,
-                           filter_radius0,
-                           resample_sr0,
-                           rms_mix_rate0,
-                           protect0,)
+                        input_audio0,
+                        vc_transform0,
+                        f0_file_,
+                        f0method0,
+                        file_index,
+                        file_index,
+                        index_rate1,
+                        filter_radius0,
+                        resample_sr0,
+                        rms_mix_rate0,
+                        protect0)
+
         MY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "WavOutput")
-        sample_rate, output_audio = ret[1][0], ret[1][1] # type: ignore
-        OutPutName = "WavOutput%s.wav" % uuid.uuid4().hex
-        OutPutName = os.path.join(MY_DIR, OutPutName) 
-        sf.write(OutPutName,
-                 output_audio,
-                 sample_rate) 
+        # ret[1] 应为 (sample_rate, output_audio)
+        sample_rate, output_audio = ret[1][0], ret[1][1]
+
+        # 3. 修正日志格式（使用 f-string 或 % 格式化）
+        logger.debug(f"sample_rate: {sample_rate}")
+        if output_audio is not None:
+            logger.debug(f"output_audio shape: {output_audio.shape}")
+        else:
+            logger.debug("output_audio is None")
+
+        # 4. 检查并修正采样率
+        if sample_rate is None or sample_rate <= 0:
+            # 尝试从输入音频读取采样率
+            try:
+                import soundfile as sf
+                info = sf.info(input_audio0)
+                sample_rate = info.samplerate
+                logger.warning(f"Using input audio samplerate: {sample_rate}")
+            except Exception as e:
+                logger.warning(f"Failed to read samplerate from input: {e}, using default 24000")
+                sample_rate = 24000  # 常用 TTS 输出采样率
+
+        # 5. 确保音频数据是二维数组（单声道或双声道）
+        if output_audio is not None:
+            if output_audio.ndim == 1:
+                output_audio = output_audio.reshape(-1, 1)  # 转为单声道二维
+            elif output_audio.ndim > 2:
+                raise ValueError(f"Unexpected audio shape: {output_audio.shape}")
+
+        # 6. 生成输出路径并写入
+        OutPutName = f"WavOutput{uuid.uuid4().hex}.wav"
+        OutPutName = os.path.join(MY_DIR, OutPutName)
+        import soundfile as sf
+        sf.write(file=OutPutName,
+                data=output_audio,
+                samplerate=sample_rate)
+
         return OutPutName, sample_rate
     
 server = ThreadedServer(RVC_Service, port=5418,hostname="localhost")

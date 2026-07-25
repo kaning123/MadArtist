@@ -34,7 +34,7 @@ SETTINGS_EXAMPLE = {
 async def list_voices(**FILTER_LIST):
     voices = await edge_tts.VoicesManager.create()
     print(f"flist_voices() called with filters: {FILTER_LIST}")
-    filtered_voices = voices.find(**FILTER_LIST)
+    filtered_voices = voices.find(Language="zh", Locale="zh-CN")
     ret = []
     for voice in filtered_voices:
         ret.append(voice)

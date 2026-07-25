@@ -82,6 +82,7 @@ def Build():
     RVC_ROOT = res[1]
     RVC_RUNTIME = fl.merge_dir_txt2(RVC_ROOT, 'Runtime',"python.exe")
     for i in injected["Injections"]:
+        globals().update(locals())
         file_path = str(MadPath([i["target"]],
                             i["root"],
                             globals()))

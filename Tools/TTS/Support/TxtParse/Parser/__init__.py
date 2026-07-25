@@ -50,5 +50,5 @@ for i in load_pkg_file():
 
 def get_parser(name):
     ret = globals().get(name, None)
-    return ret.parse_text if ret else None
+    return ret.parse_texts if ret else None
 

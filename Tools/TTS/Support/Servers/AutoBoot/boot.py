@@ -4,6 +4,7 @@ import threading
 from . import LogLib
 import logging
 import click
+import copy
 from logging.handlers import RotatingFileHandler
 from rich.logging import RichHandler
 from rich.console import Console
@@ -94,6 +95,7 @@ def main():
                     logger.debug(f"Boot Script: {boot}")
                 NewNameSpace = {}
                 for k,v in boot["MadPathNameSpace"].items():
+                    globals().update(locals())
                     NewNameSpace[k] = str(MadPath(v, [], globals()))
                 logger.debug(f"NewNameSpace: {NewNameSpace}")
                 cmd = MadCMD(boot["Execution"], {**globals(), **NewNameSpace}).l

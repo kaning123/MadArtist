@@ -29,8 +29,8 @@ def vc_single__(self,
         :param resample_sr0: 后处理重采样至最终采样率，0为不进行重采样
         :param rms_mix_rate0: 输入源音量包络替换输出音量包络融合比例，越靠近1越使用输出包络
         :param protect0: 保护清辅音和呼吸声，防止电音撕裂等artifact，拉满0.5不开启，调低加大保护力度但可能降低索引效果
-        :return vc_output1: 输出信息
-        :return vc_output2: 输出音频
+        :return OutputName: 输出音频文件
+        :return sample_rate: 输出音频采样率
         '''
 ```
 #### 参数说明
@@ -45,14 +45,14 @@ def vc_single__(self,
 - **rms_mix_rate0**: 输入源音量包络替换输出音量包络融合比例，越靠近1越使用输出包络。
 - **protect0**: 保护清辅音和呼吸声，防止电音撕裂等artifact，拉满0.5不开启，调低加大保护力度但可能降低索引效果。
 #### 返回值说明
-- **vc_output1**: 输出信息。
-- **vc_output2**: 输出音频。
+- **OutputName**: 输出音频文件。
+- **sample_rate**: 输出音频采样率。
 #### 调用示例
 ```python
 import rpyc
 conn = rpyc.connect("localhost", 5418)
 
-vc_output1, vc_output2 = conn.root.vc_single__(input_audio0="path/to/input/audio.wav", 
+OutputName, sample_rate = conn.root.vc_single__(input_audio0="path/to/input/audio.wav", 
                                                file_index="path/to/index/file", 
                                                spk_item=0, 
                                                vc_transform0=0, 

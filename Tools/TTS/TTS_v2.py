@@ -10,6 +10,23 @@ import copy
 import uuid
 from . import file_lib as fl
 from . import file_lib_v2 as flv2
+from . import Thread_Killer
+import threading
+import time
+THREAD_POOL = []
+
+def KillServers():
+    if THREAD_POOL != []:
+        Thread_Killer.kill_threads(THREAD_POOL)
+
+def BootServers():
+    KillServers()
+    ServThread = threading.Thread(target=Support.boot, args=())
+    ServThread.start()
+    THREAD_POOL.append(ServThread)
+
+BootServers()
+
 ROOT_DIR = fl.get_parent_dir(fl.get_my_dir(),2)
 import sys
 new_path = copy.deepcopy(sys.path)
@@ -21,7 +38,18 @@ except ImportError:
     sys.path = new_path
     raise ImportError("Tools.AutoTranslate module not found.")
 sys.path = new_path
-connection = rpyc.connect("localhost", 5418)
+err_times = 1
+def conn_await():
+    global err_times
+    try:
+        time.sleep(1)
+        return rpyc.connect("localhost", 5418)
+    except Exception as e:
+        print(f"Time {err_times} failed to connect to server: {e}")
+        err_times += 1
+        return conn_await()
+
+connection = conn_await()
 
 def Change_voice_pth(vc_path):
     return connection.root.get_vc(vc_path)
@@ -49,7 +77,7 @@ def VoiceChangeSingle(audio_path,
             ret = connection.root.vc_single__(audio_path, 
                                               index_path, 
                                               vc_transform0 = diff)
-            return ret[0]
+            return ret
     except Exception:
         traceback.print_exc()
         if depth < retry:
@@ -93,7 +121,7 @@ def TTS_Main(texts: list[str],
              notes: list[list[str | None]] | None = None,
              VoicePth = None,
              IndexPath = None,
-             BaseVoiceGenerator: str = "edge_tts_based_engine",
+             BaseVoiceGenerator: str = "edge_tts_based_engine_zh",
              TxtParser: str = "zh_pinyin",):
     
     BaseVoiceGenerator_ = TxtParse.GetGenerator(BaseVoiceGenerator)
@@ -118,12 +146,12 @@ def TTS_Main(texts: list[str],
         audio_path = BaseVoiceGenerator_.generate(text, note)
         if audio_path is None:
             raise ValueError("Audio path is None.")
-        with flv2.TempDir(f"TTSTempDir_{uuid.uuid4().hex}") as temp_dir:
-            temp_dir_path = temp_dir.path
-            ret = VoiceSplit.cut_and_save_voices(audio_path, output_dir=temp_dir_path)
-            res = VoiceChangeMulti(ret, IndexPath, notes=note, VoicePth=VoicePth, ifChangeVoicePth=True)
-            paths.append(res)
+        temp_dir_path = fl.merge_dir_txt2(fl.get_my_dir(),"Temp",f"TTSTempDir_{uuid.uuid4().hex}")
+        ret = VoiceSplit.cut_and_save_voices(audio_path, output_dir=temp_dir_path)
+        res = VoiceChangeMulti(ret, IndexPath, notes=note, VoicePth=VoicePth, ifChangeVoicePth=True)
+        paths.append(res)
     return paths
+
 
 if __name__ == "__main__":
     pass

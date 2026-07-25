@@ -7,7 +7,7 @@ def parse_text(text):
     res = ",".join([i[0] for i in pinyin_list])
     return res
 
-def parse_txts(txts):
+def parse_texts(txts):
     ret = []
     for txt in txts:
         ret.append(parse_text(txt))

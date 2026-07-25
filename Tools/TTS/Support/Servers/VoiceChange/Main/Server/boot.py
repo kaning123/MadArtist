@@ -29,7 +29,7 @@ INJECTION_DIR = fl.merge_dir_txt(ROOT_DIR, 'Injection')
 with open(fl.merge_dir_txt(CONFIG_DIR, 'Build.json'), 'r') as f:
     json_data = json.load(f)
 RVC_ROOT = json_data.get("root_location", "")
-if RVC_ROOT == "":
+if not os.path.exists(RVC_ROOT):
     Build.Build()
     subprocess.run([sys.executable, __file__])
     sys.exit(0)
@@ -52,6 +52,6 @@ if __name__ == "__main__":
         console.print("[bold cyan]MadArtist Server Boot Script[/bold cyan] - Version [red]Alpha_0.0.1_202606[/red]")
         boot()
     
-    except KeyboardInterrupt:
+    except BaseException:
         console.print("[bold green]Exiting...[/bold green] - [bold cyan]MadArtist Server Boot Script[/bold cyan]")
 
