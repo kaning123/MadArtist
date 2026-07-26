@@ -1,6 +1,6 @@
 [project]
 name = "MadArtist"
-version = "0.0.2_Alpha_202607"
+version = "0.0.3_Alpha_202607"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
