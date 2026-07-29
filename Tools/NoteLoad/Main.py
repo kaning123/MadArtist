@@ -226,16 +226,16 @@ def NoteLoadMain(
 def _build_parser() -> argparse.ArgumentParser:
     """Build the command-line argument parser."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input-note", required=True, help="Path to the .note file")
+    parser.add_argument("--input-note",'-n', required=True, help="Path to the .note file")
     parser.add_argument(
-        "--output-wav",
+        "--output-wav",'-o',
         default=None,
         help="Output WAV path (default: input path with .wav suffix)",
     )
-    parser.add_argument("--voice-pth", help="TTS VoicePth; persisted in JSON")
-    parser.add_argument("--index-path", help="TTS IndexPath; persisted in JSON")
+    parser.add_argument("--voice-pth",'-v', help="TTS VoicePth; persisted in JSON")
+    parser.add_argument("--index-path",'-i', help="TTS IndexPath; persisted in JSON")
     parser.add_argument(
-        "--tts-config",
+        "--tts-config",'-t',
         default=None,
         help=f"TTS JSON config path (default: {_DEFAULT_CONFIG})",
     )

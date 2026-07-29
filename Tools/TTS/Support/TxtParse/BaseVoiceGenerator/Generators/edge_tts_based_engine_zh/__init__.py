@@ -128,6 +128,7 @@ class Main:
         - 若为 int/float，视为绝对频率（Hz），计算相对于 A4=440Hz 的偏移
         - 若为 str，尝试用 librosa 转为频率，再计算偏移；若失败则假定已是合法偏移字符串（如 "+10Hz"）
         """
+        return "+1Hz"
         with flv2.TempFile(f"{uuid.uuid4().hex}.wav") as temp_file:
             full_path = temp_file.path
             try:
