@@ -1131,7 +1131,7 @@ wheels = [
 
 [[package]]
 name = "madartist"
-version = "0.0.5a202607"
+version = "0.0.6a202607"
 source = { virtual = "." }
 dependencies = [
     { name = "ai-cloudscraper" },
